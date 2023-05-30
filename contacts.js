@@ -5,25 +5,36 @@ const path = require("path");
 const contactsPath = path.join("./db", "contacts.json");
 const contactsDataBase = require("./db/contacts.json");
 
+function parseContacts(data) {
+  return JSON.parse(data.toString());
+}
+
 function listContacts() {
   fs.readFile(contactsPath)
     .then((data) => {
-      const contacts = data.toString();
-      return contacts;
+      return parseContacts(data);
     })
-    .then((result) => console.table(result.blue))
+    .then((list) => {
+      return [...list].sort((a, b) => {
+        return a.name.localeCompare(b.name);
+      });
+    })
+    .then((result) => console.table(result))
     .catch((error) => console.log(error.message));
 }
 
 function getContactById(contactId) {
   fs.readFile(contactsPath)
     .then((data) => {
-      const contacts = JSON.parse(data.toString());
+      const contacts = parseContacts(data);
+      return contacts;
+    })
+    .then((contacts) => {
       const contactsFilter = contacts.filter(
         (contact) => contact.id === contactId
       );
       if (contactsFilter.length > 0) {
-        console.log(contactsFilter);
+        console.table(contactsFilter);
         return;
       }
       console.log(`There is no contact with the id: ${contactId}.`.red);
@@ -34,7 +45,10 @@ function getContactById(contactId) {
 function removeContact(contactId) {
   fs.readFile(contactsPath)
     .then((data) => {
-      const contacts = JSON.parse(data.toString());
+      const contacts = parseContacts(data);
+      return contacts;
+    })
+    .then((contacts) => {
       const contactIndex = contacts.findIndex(
         (contact) => contact.id === contactId
       );
@@ -57,7 +71,9 @@ function removeContact(contactId) {
 
 function addContact(name, email, phone) {
   const contact = {
-    id: Math.floor(Math.random() * 10000) + contactsDataBase.length,
+    id: (
+      Math.floor(Math.random() * 100000) + contactsDataBase.length
+    ).toString(),
     name,
     email,
     phone,
