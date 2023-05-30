@@ -3,11 +3,11 @@ const contacts = require("./contacts");
 
 const program = new Command();
 program
-  .option("-a, --action <string>", "choose action")
+  .option("-a, --action <string>", "choose action: list, get, add, remove")
   .option("-i, --id <string>", "user id")
-  .option("-n, --name, <string>", "user name")
+  .option("-n, --name <string>", "user name")
   .option("-e, --email <string>", "user email")
-  .option("-p --phone <string>", "user phone");
+  .option("-p, --phone <string>", "user phone");
 
 program.parse(process.argv);
 

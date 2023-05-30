@@ -61,7 +61,10 @@ function removeContact(contactId) {
             return;
           }
         });
-        console.log(`Contact with the id ${contactId} has been removed.`.green);
+        console.log(
+          `Contact with the id ${contactId} has been removed.`
+            .green
+        );
       } else {
         console.log(`There is no contact with the id: ${contactId}.`.red);
       }
@@ -80,7 +83,7 @@ function addContact(name, email, phone) {
   };
 
   if (name === undefined || email === undefined || phone === undefined) {
-    console.log("Please set all arguments (name,email,phone) to add contact");
+    console.log("Please set all arguments (name, email, phone) to add contact".red);
     return;
   }
 
